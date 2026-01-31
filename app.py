@@ -19,6 +19,7 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings("ignore")
 
+# Page configuration
 st.set_page_config(
     page_title="Student Performance Classifier",
     page_icon="📚",
@@ -26,10 +27,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Keep sidebar always visible
+# Prevent sidebar from collapsing - always keep it visible
 st.markdown("""
 <style>
-    /* Sidebar always visible */
+    /* FORCE SIDEBAR TO ALWAYS BE VISIBLE - CANNOT COLLAPSE */
     section[data-testid="stSidebar"] {
         min-width: 280px !important;
         width: 280px !important;
@@ -38,17 +39,14 @@ st.markdown("""
         visibility: visible !important;
     }
     
-    /* Hide sidebar collapse button */
+    /* Hide the collapse button entirely */
     button[data-testid="stSidebarCollapseButton"],
     [data-testid="collapsedControl"],
-    [data-testid="stSidebarCollapsedControl"] {
+    button[kind="header"] {
         display: none !important;
-        visibility: hidden !important;
-        width: 0 !important;
-        height: 0 !important;
     }
     
-    /* Sidebar content visibility */
+    /* Ensure sidebar content is always visible */
     section[data-testid="stSidebar"] > div {
         width: 100% !important;
         visibility: visible !important;
@@ -57,12 +55,12 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Custom styling
+# Custom CSS - Premium Professional Design
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
     
-    /* Global styles */
+    /* ===== GLOBAL ===== */
     .stApp {
         background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -73,7 +71,7 @@ st.markdown("""
         max-width: 1200px;
     }
     
-    /* Header */
+    /* ===== HEADER ===== */
     .main-header {
         background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
         border-radius: 20px;
@@ -113,13 +111,64 @@ st.markdown("""
         position: relative;
     }
     
-    /* Sidebar */
+    /* ===== SIDEBAR - DARK PROFESSIONAL ===== */
     section[data-testid="stSidebar"],
     section[data-testid="stSidebar"] > div,
     section[data-testid="stSidebar"] [data-testid="stSidebarContent"] {
         background: linear-gradient(180deg, #1e1e2e 0%, #181825 100%) !important;
     }
     
+    /* ===== SIDEBAR TOGGLE BUTTON - ALWAYS VISIBLE ===== */
+    /* When sidebar is collapsed - show expand button */
+    button[data-testid="stSidebarCollapseButton"],
+    button[data-testid="baseButton-headerNoPadding"],
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="collapsedControl"],
+    button[kind="header"],
+    .stSidebar > div:first-child > button,
+    div[data-testid="stSidebarCollapsedControl"] > button,
+    section[data-testid="stSidebar"] button[kind="header"] {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 12px !important;
+        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5) !important;
+        transition: all 0.2s ease !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        z-index: 9999 !important;
+        position: relative !important;
+    }
+    
+    button[data-testid="stSidebarCollapseButton"]:hover,
+    button[data-testid="baseButton-headerNoPadding"]:hover,
+    [data-testid="stSidebarCollapsedControl"]:hover,
+    [data-testid="collapsedControl"]:hover,
+    button[kind="header"]:hover {
+        background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%) !important;
+        transform: scale(1.1) !important;
+        box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6) !important;
+    }
+    
+    button[data-testid="stSidebarCollapseButton"] svg,
+    button[data-testid="baseButton-headerNoPadding"] svg,
+    [data-testid="stSidebarCollapsedControl"] svg,
+    [data-testid="collapsedControl"] svg,
+    button[kind="header"] svg {
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+        width: 20px !important;
+        height: 20px !important;
+    }
+    
+    /* Collapsed sidebar control container */
+    [data-testid="stSidebarCollapsedControl"] {
+        position: fixed !important;
+        left: 10px !important;
+        top: 10px !important;
+        z-index: 99999 !important;
+    }
     
     /* ALL sidebar text white */
     section[data-testid="stSidebar"] h1, section[data-testid="stSidebar"] h2,
@@ -247,17 +296,19 @@ st.markdown("""
         color: #fff !important;
         border: none !important;
         border-radius: 6px !important;
-        padding: 0.35rem 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
         font-weight: 500 !important;
-        font-size: 0.8rem !important;
-        box-shadow: 0 2px 4px rgba(99,102,241,0.2) !important;
+        font-size: 0.85rem !important;
+        box-shadow: 0 2px 6px rgba(99,102,241,0.25) !important;
+        transition: all 0.15s ease !important;
     }
     
     section[data-testid="stSidebar"] [data-testid="stDownloadButton"] button:hover {
         background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%) !important;
+        box-shadow: 0 3px 10px rgba(99,102,241,0.35) !important;
     }
     
-    /* Cards */
+    /* ===== CARDS ===== */
     .info-card {
         background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
         border-radius: 16px;
@@ -311,7 +362,7 @@ st.markdown("""
         font-size: 0.95rem;
     }
     
-    /* Metric cards */
+    /* ===== METRIC CARDS ===== */
     .metric-card {
         background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
         border-radius: 16px;
@@ -344,7 +395,7 @@ st.markdown("""
     .metric-value { font-size: 1.8rem; font-weight: 800; font-family: 'Fira Code', monospace; background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .metric-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 0.3rem; }
     
-    /* Section headers */
+    /* ===== SECTION HEADERS ===== */
     .section-header {
         font-size: 1.35rem;
         font-weight: 700;
@@ -359,7 +410,7 @@ st.markdown("""
         gap: 0.5rem;
     }
     
-    /* Model badges */
+    /* ===== MODEL BADGES ===== */
     .model-badge {
         display: inline-block;
         padding: 0.6rem 1.25rem;
@@ -378,7 +429,7 @@ st.markdown("""
         box-shadow: 0 8px 25px rgba(99, 102, 241, 0.45);
     }
     
-    /* Tabs */
+    /* ===== TABS ===== */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
         background: linear-gradient(135deg, #ffffff, #f8fafc);
@@ -409,7 +460,7 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
     }
     
-    /* Streamlit metrics */
+    /* ===== STREAMLIT METRICS ===== */
     [data-testid="stMetric"] {
         background: linear-gradient(145deg, #ffffff, #f8fafc);
         padding: 1.25rem;
@@ -437,7 +488,7 @@ st.markdown("""
         font-weight: 700; 
     }
     
-    /* Dataframes */
+    /* ===== DATAFRAME ===== */
     [data-testid="stDataFrame"] { 
         background: #ffffff; 
         border-radius: 14px; 
@@ -446,7 +497,7 @@ st.markdown("""
         border: 1px solid #e2e8f0;
     }
     
-    /* Expanders */
+    /* ===== EXPANDER ===== */
     [data-testid="stExpander"] { 
         background: #ffffff; 
         border: 1px solid #e2e8f0; 
@@ -464,7 +515,7 @@ st.markdown("""
         font-weight: 600; 
     }
     
-    /* Markdown */
+    /* ===== MARKDOWN ===== */
     .main .stMarkdown h1 { color: #0f172a !important; font-weight: 800; font-size: 1.75rem; }
     .main .stMarkdown h2 { color: #1e293b !important; font-weight: 700; font-size: 1.4rem; }
     .main .stMarkdown h3 { color: #334155 !important; font-weight: 700; font-size: 1.15rem; }
@@ -480,7 +531,7 @@ st.markdown("""
         border: 1px solid #e2e8f0;
     }
     
-    /* Alerts */
+    /* ===== ALERTS ===== */
     .stSuccess { 
         background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important; 
         border: 1px solid #a7f3d0 !important; 
@@ -500,23 +551,23 @@ st.markdown("""
         border-left: 4px solid #3b82f6 !important;
     }
     
-    /* Hide branding */
+    /* ===== HIDE BRANDING ===== */
     #MainMenu, footer, header { visibility: hidden; }
     
-    /* Scrollbar */
+    /* ===== SCROLLBAR ===== */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
     ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #94a3b8, #64748b); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #6366f1, #8b5cf6); }
     
-    /* Animations */
+    /* ===== ANIMATIONS ===== */
     .animate-fade { animation: fadeIn 0.6s ease-out; }
     @keyframes fadeIn { 
         from { opacity: 0; transform: translateY(15px); } 
         to { opacity: 1; transform: translateY(0); } 
     }
     
-    /* Pulse glow effect */
+    /* ===== PULSE GLOW ===== */
     @keyframes pulseGlow {
         0%, 100% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.3); }
         50% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.5); }
@@ -527,7 +578,7 @@ st.markdown("""
 
 @st.cache_resource
 def load_model(model_name):
-    """Load trained model"""
+    """Load a saved model from disk"""
     paths = [
         f'saved_models/{model_name}.pkl',
         os.path.join(os.path.dirname(__file__), 'saved_models', f'{model_name}.pkl')
@@ -540,7 +591,7 @@ def load_model(model_name):
 
 @st.cache_resource
 def load_scaler():
-    """Load feature scaler"""
+    """Load the feature scaler"""
     paths = [
         'saved_models/scaler.pkl',
         os.path.join(os.path.dirname(__file__), 'saved_models', 'scaler.pkl')
@@ -549,23 +600,6 @@ def load_scaler():
         if os.path.exists(path):
             return joblib.load(path)
     return None
-
-
-def get_test_data_bytes():
-    """Get test data file bytes for download"""
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    data_dir = os.path.join(script_dir, 'data')
-    test_data_path = os.path.join(data_dir, 'test_data.csv')
-    
-    if not os.path.exists(test_data_path):
-        return None
-    
-    try:
-        with open(test_data_path, 'rb') as f:
-            data = f.read()
-        return data
-    except Exception as e:
-        return None
 
 
 def generate_test_data_if_needed():
@@ -606,7 +640,7 @@ def generate_test_data_if_needed():
         test_data['Age'] = np.random.choice(train_df['Age'].values, size=n_samples, replace=True)
         
         for col in ['Gender', 'Ethnicity', 'ParentalEducation', 'Tutoring', 
-                   'ParentalSupport', 'Extracurricular', 'Sports', 'Music', 'Volunteering']:
+                    'ParentalSupport', 'Extracurricular', 'Sports', 'Music', 'Volunteering']:
             probs = train_df[col].value_counts(normalize=True).sort_index()
             test_data[col] = np.random.choice(probs.index.values, size=n_samples, p=probs.values, replace=True)
         
@@ -626,7 +660,6 @@ def generate_test_data_if_needed():
         return True
         
     except Exception as e:
-        st.error(f"Error generating test data: {str(e)}")
         return False
 
 
@@ -643,7 +676,7 @@ def get_model_results():
 
 
 def calculate_metrics(y_true, y_pred, y_pred_proba):
-    """Calculate classification metrics"""
+    """Calculate evaluation metrics for classification"""
     try:
         if y_pred_proba.ndim == 1:
             y_pred_proba = np.column_stack([1 - y_pred_proba, y_pred_proba])
@@ -674,16 +707,18 @@ def calculate_metrics(y_true, y_pred, y_pred_proba):
 
 
 def plot_confusion_matrix(y_true, y_pred, title="Confusion Matrix"):
-    """Plot confusion matrix"""
+    """Generate confusion matrix visualization with professional light theme"""
     cm = confusion_matrix(y_true, y_pred)
     fig, ax = plt.subplots(figsize=(8, 6))
     
+    # Light professional theme
     fig.patch.set_facecolor('#ffffff')
     ax.set_facecolor('#ffffff')
     
     classes = sorted(np.unique(np.concatenate([y_true, y_pred])))
     labels = [f'Grade {int(c)}' for c in classes]
     
+    # Professional colormap - purple gradient
     cmap = sns.light_palette("#6366f1", as_cmap=True)
     
     sns.heatmap(cm, annot=True, fmt='d', cmap=cmap, ax=ax,
@@ -695,10 +730,12 @@ def plot_confusion_matrix(y_true, y_pred, title="Confusion Matrix"):
     ax.set_ylabel('Actual', fontsize=13, fontweight='bold', color='#1e293b', labelpad=10)
     ax.set_title(title, fontsize=15, fontweight='bold', pad=15, color='#1e293b')
     
+    # Style tick labels
     ax.tick_params(colors='#475569', labelsize=11)
     plt.setp(ax.get_xticklabels(), color='#475569', fontweight='500')
     plt.setp(ax.get_yticklabels(), color='#475569', fontweight='500')
     
+    # Style colorbar
     cbar = ax.collections[0].colorbar
     cbar.ax.yaxis.set_tick_params(color='#475569')
     plt.setp(plt.getp(cbar.ax.axes, 'yticklabels'), color='#475569')
@@ -709,7 +746,7 @@ def plot_confusion_matrix(y_true, y_pred, title="Confusion Matrix"):
 
 
 def plot_metrics_comparison(results_dict):
-    """Compare model metrics"""
+    """Create bar chart comparing all models with professional light theme"""
     df = pd.DataFrame(results_dict).T
     
     fig, axes = plt.subplots(2, 3, figsize=(14, 9))
@@ -731,11 +768,13 @@ def plot_metrics_comparison(results_dict):
         ax.set_xlim(0, 1.1)
         ax.axvline(x=values.max(), color='#22c55e', linestyle='--', alpha=0.8, linewidth=2)
         
+        # Value labels
         for bar, val in zip(bars, values):
             ax.text(val + 0.02, bar.get_y() + bar.get_height()/2, 
                    f'{val:.3f}', va='center', fontsize=10, color='#1e293b',
                    fontweight='600')
         
+        # Style
         ax.tick_params(colors='#475569', labelsize=9)
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
@@ -753,6 +792,7 @@ def plot_metrics_comparison(results_dict):
 
 
 def main():
+    # Header
     st.markdown("""
     <div class="main-header animate-fade">
         <h1 class="main-title">📚 Student Performance Classification</h1>
@@ -760,10 +800,12 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
+    # Initialize variables
     uploaded_file = None
     model_key = None
     selected_display = None
     
+    # Sidebar
     with st.sidebar:
         st.markdown("## 🎯 Navigation")
         st.markdown("---")
