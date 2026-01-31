@@ -30,14 +30,42 @@ source venv/bin/activate
 
 **Windows (Command Prompt):**
 ```cmd
+REM Method 1: Try python command first (if available)
 python -m venv venv
+venv\Scripts\activate.bat
+
+REM Method 2: If python doesn't work, use py launcher
+py -m venv venv
+venv\Scripts\activate.bat
+
+REM Method 3: Use full path to Python (most reliable - adjust path if needed)
+"C:\Program Files\Python311\python.exe" -m venv venv
 venv\Scripts\activate.bat
 ```
 
+**Note:** If `python` is not recognized, skip to Method 2 or 3. To find your Python path, check:
+- `C:\Program Files\Python*`
+- `C:\Users\%USERNAME%\AppData\Local\Programs\Python*`
+
 **Windows (PowerShell):**
 ```powershell
+# Method 1: Try python command first (if available)
 python -m venv venv
-venv\Scripts\Activate.ps1
+.\venv\Scripts\Activate.ps1
+
+# Method 2: If python doesn't work, use py launcher
+py -m venv venv
+.\venv\Scripts\Activate.ps1
+
+# Method 3: Use full path to Python (most reliable - adjust path if needed)
+& "C:\Program Files\Python311\python.exe" -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+
+**Note:** If `python` is not recognized, skip to Method 2 or 3. To find your Python path in PowerShell:
+```powershell
+Get-ChildItem -Path "C:\Program Files\Python*" -Recurse -Filter "python.exe" -ErrorAction SilentlyContinue
+Get-ChildItem -Path "$env:LOCALAPPDATA\Programs\Python*" -Recurse -Filter "python.exe" -ErrorAction SilentlyContinue
 ```
 
 ### Step 3: Install Dependencies
@@ -46,7 +74,17 @@ venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
-### Step 4: Run the Application
+### Step 4: Generate Test Data (Optional)
+
+```bash
+python create_test_data.py
+```
+
+This creates `data/test_data.csv` with 500 samples (same distributions as training data, without target column).
+
+**Note:** Test data is also auto-generated when you run the Streamlit app if it doesn't exist.
+
+### Step 5: Run the Application
 
 ```bash
 streamlit run app.py
@@ -60,11 +98,12 @@ The app opens automatically at `http://localhost:8501`
 
 | Task | Mac/Linux | Windows |
 |------|-----------|---------|
-| Create venv | `python3 -m venv venv` | `python -m venv venv` |
-| Activate venv | `source venv/bin/activate` | `venv\Scripts\activate` |
+| Create venv | `python3 -m venv venv` | `py -m venv venv` (or `python -m venv venv`) |
+| Activate venv | `source venv/bin/activate` | `venv\Scripts\activate.bat` (cmd) or `.\venv\Scripts\Activate.ps1` (PowerShell) |
 | Deactivate venv | `deactivate` | `deactivate` |
 | Install deps | `pip install -r requirements.txt` | `pip install -r requirements.txt` |
 | Run app | `streamlit run app.py` | `streamlit run app.py` |
+| Generate test data | `python create_test_data.py` | `python create_test_data.py` |
 | Run tests | `python -m pytest tests/ -v` | `python -m pytest tests/ -v` |
 | Train models | `python model/train_models.py` | `python model/train_models.py` |
 
@@ -72,9 +111,41 @@ The app opens automatically at `http://localhost:8501`
 
 ## Troubleshooting
 
-### "python not found"
-- Mac: Use `python3` instead of `python`
-- Windows: Ensure Python is added to PATH during installation
+### "python not found" or "The specified disk or diskette cannot be accessed"
+This usually means the Windows Store Python stub is broken. Try these solutions in order:
+
+**Windows (Command Prompt):**
+```cmd
+REM Option 1: Use py launcher
+py -m venv venv
+venv\Scripts\activate.bat
+
+REM Option 2: Use full path to Python (adjust path if needed)
+"C:\Program Files\Python311\python.exe" -m venv venv
+venv\Scripts\activate.bat
+```
+
+**Windows (PowerShell):**
+```powershell
+# Option 1: Use py launcher
+py -m venv venv
+.\venv\Scripts\Activate.ps1
+
+# Option 2: Use full path to Python (adjust path if needed)
+& "C:\Program Files\Python311\python.exe" -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+
+**To find your Python installation:**
+```powershell
+# PowerShell: Search for Python
+Get-ChildItem -Path "C:\Program Files\Python*" -Recurse -Filter "python.exe" -ErrorAction SilentlyContinue
+Get-ChildItem -Path "$env:LOCALAPPDATA\Programs\Python*" -Recurse -Filter "python.exe" -ErrorAction SilentlyContinue
+```
+
+**Mac/Linux**: Use `python3` instead of `python`
+
+**If nothing works**: Reinstall Python from [python.org](https://www.python.org/downloads/) and check "Add Python to PATH" during installation
 
 ### "pip not found"
 ```bash
@@ -87,9 +158,16 @@ brew install libomp
 pip install xgboost
 ```
 
-### Permission denied on Windows PowerShell
+### Permission denied on Windows PowerShell (for Activate.ps1)
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+.\venv\Scripts\Activate.ps1
+```
+
+### Alternative: Use Command Prompt instead of PowerShell
+```cmd
+python -m venv venv
+venv\Scripts\activate.bat
 ```
 
 ---
@@ -100,7 +178,17 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 2. **Upload a CSV file** with test data
 3. **View results**: metrics, confusion matrix, classification report
 
-### Test Data Format
+### Test Data
+
+**Generate test data:**
+```bash
+python create_test_data.py
+```
+
+**Download test data from app:**
+- The Streamlit app has a download button in the sidebar to download `test_data.csv`
+
+**Test Data Format:**
 Your CSV must have these columns:
 - `Age`, `Gender`, `Ethnicity`, `ParentalEducation`
 - `StudyTimeWeekly`, `Absences`, `Tutoring`, `ParentalSupport`

@@ -101,11 +101,15 @@ ML2/
 ├── app.py                      # Streamlit web application
 ├── requirements.txt            # Python dependencies
 ├── README.md                   # Project documentation
+├── QUICK_START.md              # Quick start guide
+├── create_test_data.py         # Test data generation script
 ├── model_results.xlsx          # Evaluation metrics
 │
 ├── data/
-│   ├── Student_performance_data.csv    # Dataset
-│   └── validate_dataset.py             # Validation script
+│   ├── Student_performance_data.csv    # Training dataset
+│   ├── test_data.csv                   # Test data (500 samples, no target)
+│   ├── validate_dataset.py            # Validation script
+│   └── README_TEST_DATA.md            # Test data documentation
 │
 ├── model/
 │   ├── __init__.py
@@ -160,7 +164,17 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### Step 4: Train Models (if needed)
+### Step 4: Generate Test Data (Optional)
+
+Test data is auto-generated when you run the app. To generate manually:
+
+```bash
+python create_test_data.py
+```
+
+This creates `data/test_data.csv` with 500 samples (same distributions as training data, without target column).
+
+### Step 5: Train Models (if needed)
 
 Models are pre-trained and saved. To retrain:
 
@@ -168,7 +182,7 @@ Models are pre-trained and saved. To retrain:
 python model/train_models.py
 ```
 
-### Step 5: Run the Application
+### Step 6: Run the Application
 
 ```bash
 streamlit run app.py
@@ -184,10 +198,11 @@ The web application includes:
 
 1. **Dataset Upload (CSV)** - Upload test data for evaluation
 2. **Model Selection Dropdown** - Choose from 6 trained models
-3. **Evaluation Metrics Display** - View Accuracy, AUC, Precision, Recall, F1, MCC
-4. **Confusion Matrix** - Visual representation of predictions
-5. **Classification Report** - Per-class precision, recall, and F1 scores
-6. **Model Comparison Dashboard** - Compare all models side by side
+3. **Test Data Download** - Download pre-generated test data (500 samples)
+4. **Evaluation Metrics Display** - View Accuracy, AUC, Precision, Recall, F1, MCC
+5. **Confusion Matrix** - Visual representation of predictions
+6. **Classification Report** - Per-class precision, recall, and F1 scores
+7. **Model Comparison Dashboard** - Compare all models side by side
 
 ---
 
