@@ -10,17 +10,17 @@ Multi-class classification system to predict student academic grades using machi
 
 ## a. Problem Statement
 
-Predicting student academic performance is crucial for educational institutions to identify at-risk students early and provide timely interventions. This project addresses the challenge of classifying students into grade categories (0-4) based on their demographic information, study habits, and extracurricular involvement.
+This project predicts student academic performance by classifying students into grade categories (0-4) using their demographic info, study habits, and extracurricular activities.
 
-The classification task involves:
-- Predicting one of 5 grade classes based on 14 input features
-- Comparing 6 different ML algorithms to find the best approach
-- Building a web interface for real-time predictions and model evaluation
+The main goals:
+- Predict one of 5 grade classes from 14 input features
+- Compare 6 different ML algorithms to see which works best
+- Build a web interface to evaluate models and make predictions
 
-This work has practical applications in:
-- Early warning systems for academic advisors
-- Personalized learning path recommendations
-- Resource allocation for student support services
+Could be useful for:
+- Identifying students who might need extra help
+- Understanding what factors affect student performance
+- Helping schools allocate resources better
 
 ---
 
@@ -83,37 +83,39 @@ This work has practical applications in:
 
 ### Model Performance Observations
 
-| ML Model Name | Observation about model performance |
-|---------------|-------------------------------------|
-| Logistic Regression | Achieves 75.16% accuracy which is reasonable for a linear model on multi-class data. The high AUC (0.8936) indicates good class separation ability despite moderate accuracy. Lower precision and recall suggest difficulty distinguishing between adjacent grade classes. Works best as a baseline model and for interpretability when understanding feature contributions. |
-| Decision Tree | Strong performer with 91.86% accuracy. Captures non-linear decision boundaries effectively without requiring feature scaling. The balanced precision (0.8490) and recall (0.8554) indicate consistent performance across all grade classes. Depth limitation (max_depth=10) prevents overfitting while maintaining predictive power. |
-| kNN | Lowest performer at 62.42% accuracy. The algorithm struggles with the high-dimensional feature space and class imbalance. Being distance-based, it's sensitive to the scale and distribution of features. The low MCC (0.4363) confirms weak correlation between predictions and actual grades. May improve with feature selection or different k values. |
-| Naive Bayes | Matches Logistic Regression accuracy (75.16%) with slightly better AUC (0.8987). The independence assumption doesn't fully hold for this dataset where features like GPA and StudyTime are correlated. High precision (0.7368) but lower recall (0.5940) means it's conservative in predictions, missing some correct classifications. |
-| Random Forest (Ensemble) | Excellent performance at 90.81% accuracy with the highest precision (0.8810). The ensemble of 100 trees reduces variance and handles the multi-class problem well. Highest AUC among non-boosting methods (0.9796) demonstrates strong probability calibration. Slightly lower recall suggests some minority class samples are misclassified. |
-| XGBoost (Ensemble) | Best overall model with 92.07% accuracy and highest AUC (0.9906). Gradient boosting effectively learns from errors of previous trees. Balanced precision (0.8608) and recall (0.8546) with highest MCC (0.8828) indicate robust performance across all metrics. The sequential error correction mechanism handles class imbalance better than other models. |
+| ML Model Name | Notes |
+|---------------|-------|
+| Logistic Regression | Got 75.16% accuracy, which is decent for a linear model. AUC is pretty high (0.8936) so it can separate classes well, but precision/recall are lower - probably struggles with similar grade classes. Good baseline model. |
+| Decision Tree | Did really well at 91.86% accuracy. Handles non-linear patterns without needing scaling. Precision and recall are balanced (both around 0.85), so it's consistent across classes. Set max_depth=10 to avoid overfitting. |
+| kNN | Worst performer at 62.42% accuracy. Doesn't work well with this many features and the class imbalance. Since it's distance-based, feature scaling matters a lot. Low MCC (0.4363) shows weak predictions. Might need feature selection or different k. |
+| Naive Bayes | Same accuracy as Logistic Regression (75.16%) but better AUC (0.8987). The independence assumption is a problem here since GPA and study time are correlated. High precision but low recall - it's being too cautious. |
+| Random Forest | Great performance at 90.81% accuracy, highest precision (0.8810). Using 100 trees helps with variance and multi-class problems. Best AUC (0.9796) among non-boosting methods. Recall is a bit lower, so some minority classes get missed. |
+| XGBoost | Best model overall - 92.07% accuracy and highest AUC (0.9906). Gradient boosting learns from mistakes well. Balanced precision/recall (both ~0.86) and highest MCC (0.8828). Handles class imbalance better than others. |
 
 ---
 
 ## Project Structure
 
 ```
-ML2/
-├── app.py                      # Streamlit web application
+ML-assignment-2/
+├── app.py                      # Main Streamlit web application (modular)
 ├── requirements.txt            # Python dependencies
 ├── README.md                   # Project documentation
 ├── QUICK_START.md              # Quick start guide
 ├── create_test_data.py         # Test data generation script
-├── model_results.xlsx          # Evaluation metrics
+├── .gitignore                  # Git ignore patterns
+├── ML_Assignment_2_Results.xlsx # Model evaluation metrics (generated by train_models.py)
+├── ML_Assignment_2.pdf         # Assignment PDF document
 │
 ├── data/
 │   ├── Student_performance_data.csv    # Training dataset
 │   ├── test_data.csv                   # Test data (500 samples, no target)
-│   ├── validate_dataset.py            # Validation script
 │   └── README_TEST_DATA.md            # Test data documentation
 │
 ├── model/
 │   ├── __init__.py
-│   └── train_models.py         # Model training script
+│   ├── train_models.py         # Model training script (.py)
+│   └── train_models.ipynb      # Model training notebook (.ipynb)
 │
 ├── saved_models/               # Trained model files
 │   ├── logistic_regression.pkl
@@ -123,6 +125,22 @@ ML2/
 │   ├── random_forest.pkl
 │   ├── xgboost.pkl
 │   └── scaler.pkl
+│
+├── utils/                      # Utility modules (modular code)
+│   ├── __init__.py
+│   ├── model_loader.py         # Model loading functions
+│   ├── data_processing.py     # Data generation utilities
+│   ├── metrics.py              # Metrics calculation
+│   └── visualizations.py      # Plotting functions
+│
+├── components/                 # UI components
+│   ├── __init__.py
+│   └── sidebar.py              # Sidebar component
+│
+└── styles/                     # Styling modules
+    ├── __init__.py
+    ├── css.py                  # CSS styles
+    └── javascript.py           # JavaScript code
 │
 └── tests/
     └── test_models.py          # Unit tests
@@ -141,8 +159,8 @@ ML2/
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/ML-Assignment-2.git
-cd ML-Assignment-2
+git clone <repository-url>
+cd ML-assignment-2
 ```
 
 ### Step 2: Create Virtual Environment
@@ -166,21 +184,33 @@ pip install -r requirements.txt
 
 ### Step 4: Generate Test Data (Optional)
 
-Test data is auto-generated when you run the app. To generate manually:
+The app will auto-generate test data when you run it. If you want to generate it manually:
 
 ```bash
 python create_test_data.py
 ```
 
-This creates `data/test_data.csv` with 500 samples (same distributions as training data, without target column).
+This creates `data/test_data.csv` with 500 samples. It has the same feature distributions as the training data, but no target column.
+
+**Note:** Both `test_data.csv` and `train_models.ipynb` are committed to GitHub and can be downloaded directly from the Streamlit app sidebar in the "Download Files" section.
 
 ### Step 5: Train Models (if needed)
 
-Models are pre-trained and saved. To retrain:
+The models are already trained and saved. If you want to retrain them:
 
+**Using Python Script:**
 ```bash
 python model/train_models.py
 ```
+
+**Using Jupyter Notebook:**
+```bash
+jupyter notebook model/train_models.ipynb
+```
+
+Both will train all 6 models and save them to `saved_models/`. The notebook is included so you can see the training process step by step.
+
+**Note:** All models use sklearn's built-in implementations. The training notebook (`train_models.ipynb`) can be downloaded directly from the Streamlit app sidebar. After training, model evaluation metrics are automatically saved to `ML_Assignment_2_Results.xlsx` in the project root.
 
 ### Step 6: Run the Application
 
@@ -194,15 +224,25 @@ The app will open at `http://localhost:8501`
 
 ## Streamlit Application Features
 
-The web application includes:
+The web app has these features:
 
-1. **Dataset Upload (CSV)** - Upload test data for evaluation
-2. **Model Selection Dropdown** - Choose from 6 trained models
-3. **Test Data Download** - Download pre-generated test data (500 samples)
-4. **Evaluation Metrics Display** - View Accuracy, AUC, Precision, Recall, F1, MCC
-5. **Confusion Matrix** - Visual representation of predictions
-6. **Classification Report** - Per-class precision, recall, and F1 scores
-7. **Model Comparison Dashboard** - Compare all models side by side
+1. **Dataset Upload** - Upload CSV test data to evaluate models
+2. **Model Selection** - Pick from 6 trained models (all use sklearn's built-in implementations)
+3. **Test Data Download** - Download the pre-generated test data (500 samples). The `test_data.csv` file is available on GitHub and can be downloaded directly from the Streamlit app sidebar.
+4. **Model Notebook Download** - Download the training notebook (`train_models.ipynb`) directly from the app sidebar. Both the notebook and test data are available in the "Download Files" section.
+5. **Metrics Display** - See Accuracy, AUC, Precision, Recall, F1, MCC
+6. **Confusion Matrix** - Visual chart showing prediction accuracy
+7. **Classification Report** - Detailed per-class metrics
+8. **Model Comparison** - Compare all models side by side
+9. **Charts and Graphs** - Interactive visualizations of model performance
+
+### Code Structure
+
+The code is split into modules:
+- **`app.py`** - Main app file that handles the UI
+- **`utils/`** - Helper functions for models, metrics, data processing, and plots
+- **`components/`** - UI components like sidebar
+- **`styles/`** - CSS and JavaScript for styling
 
 ---
 
@@ -235,24 +275,24 @@ python -m pytest tests/ --cov=. --cov-report=html
 
 ## Evaluation Metrics Explained
 
-| Metric | Description | Range |
-|--------|-------------|-------|
-| **Accuracy** | Proportion of correct predictions | 0-1 |
-| **AUC** | Area under ROC curve; measures class separation | 0-1 |
-| **Precision** | True positives / (True positives + False positives) | 0-1 |
-| **Recall** | True positives / (True positives + False negatives) | 0-1 |
-| **F1 Score** | Harmonic mean of precision and recall | 0-1 |
-| **MCC** | Matthews Correlation Coefficient; balanced measure | -1 to 1 |
+| Metric | What it means | Range |
+|--------|---------------|-------|
+| **Accuracy** | How many predictions were correct | 0-1 |
+| **AUC** | How well the model separates different classes | 0-1 |
+| **Precision** | Of all positive predictions, how many were actually positive | 0-1 |
+| **Recall** | Of all actual positives, how many did we catch | 0-1 |
+| **F1 Score** | Balance between precision and recall | 0-1 |
+| **MCC** | Overall correlation between predictions and actual values | -1 to 1 |
 
 ---
 
 ## Key Findings
 
-1. **XGBoost performs best** with 92.07% accuracy and highest MCC (0.8828)
-2. **Ensemble methods outperform** single classifiers by ~15-20%
-3. **kNN struggles** with high dimensionality and class imbalance
-4. **GPA is the strongest predictor** of grade class
-5. **Study time and absences** are important secondary factors
+1. XGBoost works best - 92.07% accuracy and highest MCC (0.8828)
+2. Ensemble methods (Random Forest, XGBoost) beat single models by about 15-20%
+3. kNN didn't work well - too many features and class imbalance hurt it
+4. GPA is the most important feature for predicting grades
+5. Study time and absences also matter a lot
 
 ---
 

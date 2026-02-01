@@ -218,7 +218,7 @@ def main():
     # Save results to Excel
     results_df = pd.DataFrame(results).T
     results_df.columns = ['Accuracy', 'AUC', 'Precision', 'Recall', 'F1', 'MCC']
-    results_path = os.path.join(project_root, 'model_results.xlsx')
+    results_path = os.path.join(project_root, 'ML_Assignment_2_Results.xlsx')
     results_df.to_excel(results_path, index=True)
     
     print("\n" + "="*50)
