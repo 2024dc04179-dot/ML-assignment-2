@@ -17,7 +17,7 @@ Get the Student Performance Classifier running in under 5 minutes.
 ### Step 1: Navigate to Project Directory
 
 ```bash
-cd ML Assignment2
+cd ML-assignment-2
 ```
 
 ### Step 2: Create Virtual Environment
@@ -82,9 +82,23 @@ python create_test_data.py
 
 This creates `data/test_data.csv` with 500 samples (same distributions as training data, without target column).
 
-**Note:** Test data is also auto-generated when you run the Streamlit app if it doesn't exist.
+**Note:** Test data is also auto-generated when you run the Streamlit app if it doesn't exist. Both `test_data.csv` and `train_models.ipynb` can be downloaded directly from the app sidebar in the "Download Files" section.
 
-### Step 5: Run the Application
+### Step 5: Train Models (Optional)
+
+Models are pre-trained. To retrain:
+
+**Using Python script:**
+```bash
+python model/train_models.py
+```
+
+**Using Jupyter notebook:**
+```bash
+jupyter notebook model/train_models.ipynb
+```
+
+### Step 6: Run the Application
 
 ```bash
 streamlit run app.py
@@ -105,7 +119,8 @@ The app opens automatically at `http://localhost:8501`
 | Run app | `streamlit run app.py` | `streamlit run app.py` |
 | Generate test data | `python create_test_data.py` | `python create_test_data.py` |
 | Run tests | `python -m pytest tests/ -v` | `python -m pytest tests/ -v` |
-| Train models | `python model/train_models.py` | `python model/train_models.py` |
+| Train models (script) | `python model/train_models.py` | `python model/train_models.py` |
+| Train models (notebook) | `jupyter notebook model/train_models.ipynb` | `jupyter notebook model/train_models.ipynb` |
 
 ---
 
@@ -174,9 +189,10 @@ venv\Scripts\activate.bat
 
 ## Using the App
 
-1. **Select a model** from the sidebar dropdown
-2. **Upload a CSV file** with test data
-3. **View results**: metrics, confusion matrix, classification report
+1. **Select a model** from the sidebar dropdown (6 models available, all use sklearn)
+2. **Upload a CSV file** with test data (must include `GradeClass` or `target` column)
+3. **View results**: metrics, confusion matrix, classification report, and model comparison
+4. **Download files**: Use the "Download Files" section in sidebar to get test data or training notebook
 
 ### Test Data
 
@@ -185,8 +201,10 @@ venv\Scripts\activate.bat
 python create_test_data.py
 ```
 
-**Download test data from app:**
-- The Streamlit app has a download button in the sidebar to download `test_data.csv`
+**Download files from app:**
+- The Streamlit app has download buttons in the sidebar under "Download Files" section:
+  - Download `test_data.csv` (500 samples, no target column)
+  - Download `train_models.ipynb` (training notebook)
 
 **Test Data Format:**
 Your CSV must have these columns:
