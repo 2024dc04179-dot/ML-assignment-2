@@ -521,7 +521,7 @@ Required columns:
     elif page == "📖 Documentation":
         st.markdown('<p class="section-header">📖 Project Documentation</p>', unsafe_allow_html=True)
         
-        tab1, tab2, tab3 = st.tabs(["📝 Problem Statement", "📊 Dataset", "🤖 Models"])
+        tab1, tab2, tab3, tab4 = st.tabs(["📝 Problem Statement", "📊 Dataset", "🤖 Models", "📖 How to Use"])
         
         with tab1:
             st.markdown("""
@@ -571,6 +571,141 @@ Required columns:
             | Naive Bayes | Probabilistic | Fast, handles small data |
             | Random Forest | Ensemble (Bagging) | Robust, feature importance |
             | XGBoost | Ensemble (Boosting) | High performance, regularized |
+            """)
+        
+        with tab4:
+            st.markdown("""
+            ### 🚀 Quick Start Guide
+            
+            **Step 1: Select a Model**
+            - Navigate to the **Model Evaluation** page
+            - Choose a model from the sidebar dropdown (6 models available)
+            - XGBoost typically performs best (92%+ accuracy)
+            
+            **Step 2: Upload Test Data**
+            - Click "Upload CSV file" in the sidebar
+            - Your CSV must include a target column (`GradeClass` or `target`)
+            - Must have 14 features matching the training data format
+            
+            **Step 3: View Results**
+            - See performance metrics (Accuracy, AUC, Precision, Recall, F1, MCC)
+            - Explore the Confusion Matrix tab for visual analysis
+            - Check the Classification Report for per-class metrics
+            - Review Prediction Confidence to see model certainty
+            """)
+            
+            st.markdown("---")
+            st.markdown("""
+            ### 📂 Data Requirements
+            
+            Your test CSV file must have these columns:
+            
+            **Required Features (14):**
+            - `StudentID`, `Age`, `Gender`, `Ethnicity`, `ParentalEducation`
+            - `StudyTimeWeekly`, `Absences`, `Tutoring`, `ParentalSupport`
+            - `Extracurricular`, `Sports`, `Music`, `Volunteering`, `GPA`
+            
+            **Target Column (required):**
+            - `GradeClass` or `target` - Contains the actual class labels (0-4)
+            
+            **Example:**
+            ```csv
+            StudentID,Age,Gender,Ethnicity,ParentalEducation,StudyTimeWeekly,Absences,Tutoring,ParentalSupport,Extracurricular,Sports,Music,Volunteering,GPA,GradeClass
+            1,18,Male,White,Some College,15,2,Yes,Yes,Yes,No,No,Yes,3.5,2
+            ```
+            """)
+            
+            st.markdown("---")
+            st.markdown("""
+            ### 📥 Download Files
+            
+            **From the Sidebar:**
+            1. Navigate to **Model Evaluation** page
+            2. Scroll to **"Download Files"** section
+            3. Click **"Download test_data.csv"** - Get 500 sample test records
+            4. Click **"Download train_models.ipynb"** - Get the training notebook
+            
+            **Test Data:**
+            - 500 samples with same distributions as training data
+            - Includes all 14 features (no target column)
+            - Ready to use for predictions
+            
+            **Training Notebook:**
+            - Complete Jupyter notebook with model training code
+            - Step-by-step execution with markdown explanations
+            - All 6 models included
+            """)
+            
+            st.markdown("---")
+            st.markdown("""
+            ### 📊 Compare Models Page
+            
+            **Features:**
+            - View all 6 models side-by-side
+            - Select which metrics to compare
+            - Sort by any metric (Accuracy, AUC, F1, MCC)
+            - Interactive bar charts and line graphs
+            - Model rankings by metric
+            - Performance grouped by model type
+            
+            **How to Use:**
+            1. Navigate to **"Compare Models"** from the sidebar
+            2. Select metrics you want to compare (default: all)
+            3. Choose sorting preference
+            4. Explore charts and rankings
+            """)
+            
+            st.markdown("---")
+            st.markdown("""
+            ### 💡 Tips & Best Practices
+            
+            **For Best Results:**
+            - ✅ Use XGBoost or Random Forest for highest accuracy
+            - ✅ Ensure your test data matches training data format
+            - ✅ Check prediction confidence scores for reliability
+            - ✅ Compare multiple models to find the best fit
+            
+            **Understanding Metrics:**
+            - **Accuracy**: Overall prediction correctness
+            - **AUC**: Class separation quality (higher is better)
+            - **Precision**: Low false positive rate
+            - **Recall**: Low false negative rate
+            - **F1 Score**: Balance between precision and recall
+            - **MCC**: Balanced metric for imbalanced classes
+            
+            **Troubleshooting:**
+            - ❌ "Target column not found" → Ensure CSV has `GradeClass` or `target` column
+            - ❌ "Model not found" → Run `python model/train_models.py` to train models
+            - ❌ Low accuracy → Check if test data format matches training data
+            """)
+            
+            st.markdown("---")
+            st.markdown("""
+            ### 🔧 Setup & Installation
+            
+            **Prerequisites:**
+            - Python 3.8+ installed
+            - pip package manager
+            
+            **Quick Setup:**
+            ```bash
+            # Create virtual environment
+            python -m venv venv
+            source venv/bin/activate  # Mac/Linux
+            # OR
+            venv\\Scripts\\activate  # Windows
+            
+            # Install dependencies
+            pip install -r requirements.txt
+            
+            # Train models (optional - pre-trained models included)
+            python model/train_models.py
+            
+            # Run the app
+            streamlit run app.py
+            ```
+            
+            For detailed setup instructions, see `QUICK_START.md` in the project root.
             """)
         
         st.markdown("---")
